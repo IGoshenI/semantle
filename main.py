@@ -1,21 +1,30 @@
 import gensim.downloader as api
-import random
+from random_word import RandomWords
 
 def main():
     print("Loading the word vectors")
-    word_vectors = api.load("glove-twitter-25")
+    word_vectors = api.load("word2vec-google-news-300")
     print("Done")
     
-    random_word = random.choice(list(word_vectors.key_to_index.keys()))
+    random = RandomWords()  
+    while True:
+        random_word = random.get_random_word()
+        if random_word in word_vectors.key_to_index.keys():
+            break
     print("The random word is: ", random_word)
     
-    '''
-    user_input = input("enter word: ")
-    try:
-        print(model.wv.similarity(random_word, user_input))
-    except:
-        print("word dont exsists")
-    '''
+    done = False
+    while not done:
+        user_input = input("enter word: ")
+        if user_input not in word_vectors.key_to_index.keys():
+            print("given word does not exsists")
+        
+        similarity = word_vectors.similarity(random_word, user_input)
+        print (similarity)
+        
+        if similarity == 1:
+            done = True
     
+
 if __name__ == "__main__":
     main()
