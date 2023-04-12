@@ -13,16 +13,18 @@ def generate_random_word(model):
 def main():
     print("Loading the word vectors")
     model = api.load("word2vec-google-news-300")
-    print("Done")
+    print("Done\n")
     
     random_word = generate_random_word(model)
-    print(random_word)
+    print("The random word is: ", random_word) # for debugging, remove later
     
     done = False
     while not done:
         user_input = input("enter word: ")
-        if user_input not in model.key_to_index.keys():
-            print("given word does not exsists")
+        word_not_exists = user_input not in model.key_to_index.keys()
+        if word_not_exists:
+            print("given word does not exsists, try another word.")
+            continue
         
         similarity = model.similarity(random_word, user_input)
         print (similarity)
